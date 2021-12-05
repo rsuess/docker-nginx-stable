@@ -10,7 +10,7 @@ VHOST_TLD="${3}"
 VHOST_TPL="${4}"
 CA_KEY="${5}"
 CA_CRT="${6}"
-GENERATE_SSL="${7}"
+GENERATE_SSL="${7}" 
 GEN_MODE="${8}"
 VERBOSE="${9:-}"
 
@@ -18,14 +18,14 @@ if [ "${GENERATE_SSL}" = "1" ]; then
 	if [ ! -d "/etc/httpd/cert/mass" ]; then
 		mkdir -p "/etc/httpd/cert/mass"
 	fi
-	_email="admin@${VHOST_NAME}${VHOST_TLD}"
-	_domain="${VHOST_NAME}${VHOST_TLD}"
-	_domains="*.${VHOST_NAME}${VHOST_TLD}"
-	_out_key="/etc/httpd/cert/mass/${VHOST_NAME}${VHOST_TLD}.key"
-	_out_csr="/etc/httpd/cert/mass/${VHOST_NAME}${VHOST_TLD}.csr"
-	_out_crt="/etc/httpd/cert/mass/${VHOST_NAME}${VHOST_TLD}.crt"
+	_email="admin@${VHOST_TLD}${VHOST_NAME}"
+	_domain="${VHOST_TLD}${VHOST_NAME}"
+	_domains="*.${VHOST_TLD}${VHOST_NAME}"
+	_out_key="/etc/httpd/cert/mass/${VHOST_TLD}${VHOST_NAME}.key"
+	_out_csr="/etc/httpd/cert/mass/${VHOST_TLD}${VHOST_NAME}.csr"
+	_out_crt="/etc/httpd/cert/mass/${VHOST_TLD}${VHOST_NAME}.crt"
 	if ! cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n "${_domain}" -e "${_email}" -a "${_domains}" "${CA_KEY}" "${CA_CRT}" "${_out_key}" "${_out_csr}" "${_out_crt}"; then
-		echo "[FAILED] Failed to add SSL certificate for ${VHOST_NAME}${VHOST_TLD}"
+		echo "[FAILED] Failed to add SSL certificate for ${VHOST_TLD}${VHOST_NAME}"
 		exit 1
 	fi
 fi
@@ -36,6 +36,6 @@ if [ -n "${VERBOSE}" ]; then
 fi
 
 if ! eval "${cmd}"; then
-	echo "[FAILED] Failed to add vhost for ${VHOST_NAME}${VHOST_TLD}"
+	echo "[FAILED] Failed to add vhost for ${VHOST_TLD}${VHOST_NAME}"
 	exit 1
 fi
